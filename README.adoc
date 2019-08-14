@@ -70,7 +70,7 @@ Either you use a database connection as in the example above, or you do like thi
 ----
 const firstName = 'Bosse';
 const lastName  = 'Nilsson';
-const dbRes     = await db.query('SELECT * FROM users WHERE firstname = ? AND lastname = ?', [firstName, lastName]);
+const dbRes     = await db.query('SELECT * FROM users WHERE firstname = $1 AND lastname = $2', [firstName, lastName]);
 ----
 
 === Check if database connection is ready
