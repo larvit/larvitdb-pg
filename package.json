@@ -1,0 +1,49 @@
+{
+  "name": "larvitdb-pg",
+  "version": "0.1.0",
+  "description": "Database wrapper for pg (PostgreSQL)",
+  "main": "build/index.js",
+  "files": [
+    "/build"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "lint": "tslint ./src/* ./test/*",
+    "test": "npm run lint && ts-node node_modules/.bin/tape test/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/larvit/larvitdb-pg.git"
+  },
+  "keywords": [
+    "db",
+    "database",
+    "wrapper",
+    "postgres",
+    "postgresql"
+  ],
+  "author": {
+    "name": "Mikael 'Lilleman' Göransson",
+    "email": "lilleman@zmartbag.com"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/larvit/larvitdb-pg/issues"
+  },
+  "homepage": "https://github.com/larvit/larvitdb-pg#readme",
+  "dependencies": {
+    "larvitutils": "^3.1.1",
+    "pg": "^7.12.1"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/node": "^12.7.1",
+    "@types/pg": "^7.4.14",
+    "@types/tape": "^4.2.33",
+    "dotenv": "^8.0.0",
+    "tape": "^4.11.0",
+    "ts-node": "^8.3.0",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
+  }
+}

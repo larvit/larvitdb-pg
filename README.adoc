@@ -1,1 +1,104 @@
 = Database wrapper for pg (PostgreSQL)
+
+Database wrapper for the pg npm package. Use this to add:
+
+* Logging
+* Compatible API to larvitdbmigration for database migrations
+* Great glory
+
+== Installation
+
+`npm i larvitdb-pg`
+
+== Usage
+
+=== Initialization
+
+[source,javascript]
+----
+import { Db } from 'larvitdb-pg';
+
+// All parameters are optional
+
+const db = new Db({
+	log:      log,                   // Logging object. Will default to a simple console logger if not provided
+	host:     'database.server.com', // Hostname of the server to connect to, can also be a socket, like this: '/cloudsql/myproject:zone:mydb'
+	port:     3211,                  // Port, ignored if host is a socket
+	user:     'dbuser',              // Database account username
+	password: 'secretpassword',      // Database account password
+	database: 'mydb',                // Database name within the database server
+});
+
+// OR
+
+const db = new Db({
+	log: log,
+	connectionString: 'postgresql://dbuser:secretpassword@database.server.com:3211/mydb',
+});
+----
+
+=== Querying
+
+==== Simple query
+
+A direct query to any connection in the pool
+
+[source,javascript]
+----
+const dbRes = await db.query('SELECT 1 + 1 AS solution');
+console.log('solution is: ' + dbRes.rows[0].solution); // 2
+console.log('All fields: ' + dbRes.fields); // ['solution']
+----
+
+==== Simple query to specific connection
+
+For example if you want to lock tables and run multiple queries on the samme connection.
+
+[source,javascript]
+----
+const dbCon = await db.pool.getConnection();
+const sql   = 'SELECT * FROM users WHERE username LIKE ' + dbCon.escape(dataToBeEscaped);
+const dbRes = await dbCon.query(sql);
+dbCon.release(); // Always release your connection when the query is done
+----
+
+==== Escape data
+
+Either you use a database connection as in the example above, or you do like this:
+
+[source,javascript]
+----
+const firstName = 'Bosse';
+const lastName  = 'Nilsson';
+const dbRes     = await db.query('SELECT * FROM users WHERE firstname = ? AND lastname = ?', [firstName, lastName]);
+----
+
+=== Check if database connection is ready
+
+To see when the database connection is ready to recieve commands. Will automatically connect if that is not done already.
+
+[source,javascript]
+----
+await db.ready();
+console.log('ready');
+----
+
+However, a query can be ran before ready(), it will wait until the database connection is ready.
+
+== Custom functions
+
+Remove all tables from current database
+
+This function will clean the current database from all tables.
+
+[source,javascript]
+----
+await db.removeAllTables();
+----
+
+
+== Version history
+
+=== v1.0
+
+* Initial release
