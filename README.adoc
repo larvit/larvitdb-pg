@@ -99,6 +99,10 @@ await db.removeAllTables();
 
 == Version history
 
-=== v1.0
+=== v0.2
+
+* Added support for getting a single connection from a pool
+
+=== v0.1
 
 * Initial release

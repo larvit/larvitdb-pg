@@ -1,4 +1,4 @@
-import { Client, Pool } from 'pg';
+import { Client, Pool, PoolClient } from 'pg';
 import { Utils, Log } from 'larvitutils';
 import { ConnectOptions, DbField, DbInitOptions, LogInstance, QueryResponse } from './models.d';
 
@@ -78,6 +78,18 @@ class Db {
 			log.error(logPrefix + 'Unexpected error on idle client in pool: ' + err.message);
 			throw err;
 		});
+	}
+
+	public async getConnection(): Promise<PoolClient> {
+		await this.ready();
+
+		if (this.pool === undefined) {
+			throw new Error('this.pool is undefined');
+		}
+
+		const client = await this.pool.connect();
+
+		return client;
 	}
 
 	public async ready(): Promise<void> {
