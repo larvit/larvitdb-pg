@@ -126,4 +126,4 @@ class Db {
 	}
 }
 
-export { Db };
+export { Db, ConnectOptions, DbField, DbInitOptions, QueryResponse };
