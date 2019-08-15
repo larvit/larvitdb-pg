@@ -1,4 +1,4 @@
-import { LogInstance, Log } from 'larvitutils';
+import { LogInstance } from 'larvitutils';
 
 type ConnectOptions = {
 	host?: string;
