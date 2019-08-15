@@ -57,6 +57,22 @@ test('Use a checked out client', async t => {
 	t.end();
 });
 
+test('Multiple statements', async t => {
+	const client = await db.getConnection();
+
+	await client.query('CREATE TABLE tmp (id serial PRIMARY KEY, name VARCHAR(50) NOT NULL)');
+	await client.query('INSERT INTO tmp VALUES(1,\'Bosse\'),(2,\'Nisse\');INSERT INTO tmp VALUES(3,\'Greta\');');
+
+	const res = await client.query('SELECT * FROM tmp');
+
+	t.equal(res.rows.length, 3);
+
+	await client.query('DROP TABLE tmp');
+	await client.release();
+
+	t.end();
+});
+
 test('Wrap up db connection', async t => {
 	await db.end();
 
