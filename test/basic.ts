@@ -28,6 +28,18 @@ test('Setup database connection', async t => {
 	t.end();
 });
 
+if (process.env.CLEAR_DB === 'true') {
+	test('Cleanup', async t => {
+		let sql = '';
+		sql += 'DROP SCHEMA public CASCADE;';
+		sql += 'CREATE SCHEMA public;';
+		sql += 'GRANT ALL ON SCHEMA public TO public;';
+		sql += 'COMMENT ON SCHEMA public IS \'standard public schema\';';
+		await db.query(sql);
+		t.end();
+	});
+}
+
 test('Insert data', async t => {
 	await db.query('CREATE TABLE tmp (id serial PRIMARY KEY, name VARCHAR(50) NOT NULL)');
 	await db.query('INSERT INTO tmp VALUES($1,$2),($3,$4)', [1, 'Bosse', 2, 'Greta']);
@@ -35,6 +47,20 @@ test('Insert data', async t => {
 	const res = await db.query('SELECT * FROM tmp');
 
 	t.equal(res.rows.length, 2);
+
+	await db.query('DROP TABLE tmp');
+
+	t.end();
+});
+
+test('Multiple rows with array field', async t => {
+	await db.query('CREATE TABLE tmp (id serial PRIMARY KEY, name VARCHAR(50) NOT NULL)');
+	await db.query('INSERT INTO tmp VALUES($1,$2),($3,$4),($5,$6)', [1, 'Bosse', 2, 'Greta', 3, 'Lasse-Majja']);
+
+	const res = await db.query('SELECT * FROM tmp WHERE id = ANY($1)', [[1, 3]]);
+
+	t.equal(res.rows.length, 2);
+	t.equal(res.rows[1].name, 'Lasse-Majja');
 
 	await db.query('DROP TABLE tmp');
 
