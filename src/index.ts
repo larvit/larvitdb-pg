@@ -1,6 +1,6 @@
 import { Client, Pool, PoolClient } from 'pg';
-import { Utils, Log } from 'larvitutils';
-import { ConnectOptions, DbField, DbInitOptions, LogInstance, QueryResponse } from './models';
+import { Utils, Log, LogInstance } from 'larvitutils';
+import { ConnectOptions, DbField, DbInitOptions, QueryResponse } from './models';
 
 const topLogPrefix = 'larvitdb-pg: src/index.ts: ';
 
