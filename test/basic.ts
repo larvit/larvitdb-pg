@@ -13,7 +13,7 @@ test('Setup database connection', async t => {
 		log,
 		host: process.env.DB_HOST,
 		port: process.env.DB_PORT === undefined ? undefined : Number(process.env.DB_PORT),
-		user: process.env.DB_USER,
+		user: process.env.DB_USER || 'postgres',
 		password: process.env.DB_PASSWORD,
 		database: process.env.DB_DATABASE || 'test',
 		connectionString: process.env.DB_CONNECTIONSTRING,
