@@ -124,7 +124,7 @@ class Db {
 		try {
 			result = await pool.query(sql, dbFields);
 		} catch (err) {
-			log.error(logPrefix + 'Error running SQL query: ' + err.message);
+			log.error(logPrefix + 'Error running SQL query: ' + err.message + ' SQL: "' + sql + '", dbFields: "' + JSON.stringify(dbFields) + '"');
 			throw err;
 		}
 
