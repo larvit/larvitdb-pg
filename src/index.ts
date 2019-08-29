@@ -43,7 +43,7 @@ class Db {
 		const logPrefix = topLogPrefix + 'Db:connect() - ';
 		const { connectOptions, log, lUtils } = this;
 
-		log.verbose(logPrefix + 'Trying to connecting to database');
+		log.debug(logPrefix + 'Trying to connecting to database');
 
 		async function tryToConnect(): Promise<void> {
 			const subLogPrefix = logPrefix + 'tryToConnect() - ';
@@ -117,7 +117,7 @@ class Db {
 			throw err;
 		}
 
-		log.verbose(logPrefix + 'Running SQL query. SQL: "' + sql + '", fields: "' + JSON.stringify(dbFields) + '"');
+		log.debug(logPrefix + 'Running SQL query. SQL: "' + sql + '", fields: "' + JSON.stringify(dbFields) + '"');
 
 		let result;
 
