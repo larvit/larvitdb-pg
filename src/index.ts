@@ -82,9 +82,9 @@ class Db {
 
 	public async getConnection(): Promise<PoolClient> {
 		const logPrefix = topLogPrefix + 'getConnection() - ';
-		const { log, pool } = this;
 
 		await this.ready();
+		const { log, pool } = this;
 
 		if (pool === undefined) {
 			const err = new Error('this.pool is undefined');
@@ -107,9 +107,9 @@ class Db {
 
 	public async query(sql: string, dbFields?: DbField[]): Promise<QueryResponse> {
 		const logPrefix = topLogPrefix + 'query() - ';
-		const { log, pool } = this;
 
 		await this.ready();
+		const { log, pool } = this;
 
 		if (pool === undefined) {
 			const err = new Error('this.pool is undefined');
