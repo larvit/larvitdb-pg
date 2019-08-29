@@ -99,6 +99,12 @@ await db.removeAllTables();
 
 == Version history
 
+=== v0.4
+
+* Added null as dbfield accepted type
+* Added more logging
+* All dependencies up to date
+
 === v0.2
 
 * Added support for getting a single connection from a pool

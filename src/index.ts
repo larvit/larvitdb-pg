@@ -17,7 +17,7 @@ class Db {
 		}
 
 		if (!options.log) {
-			this.log = new Log('info');
+			this.log = new Log();
 		} else {
 			this.log = options.log;
 		}
@@ -81,13 +81,18 @@ class Db {
 	}
 
 	public async getConnection(): Promise<PoolClient> {
+		const logPrefix = topLogPrefix + 'getConnection() - ';
+		const { log, pool } = this;
+
 		await this.ready();
 
-		if (this.pool === undefined) {
-			throw new Error('this.pool is undefined');
+		if (pool === undefined) {
+			const err = new Error('this.pool is undefined');
+			log.error(logPrefix + err.message);
+			throw err;
 		}
 
-		const client = await this.pool.connect();
+		const client = await pool.connect();
 
 		return client;
 	}
@@ -102,27 +107,43 @@ class Db {
 
 	public async query(sql: string, dbFields?: DbField[]): Promise<QueryResponse> {
 		const logPrefix = topLogPrefix + 'query() - ';
-		const { log } = this;
+		const { log, pool } = this;
 
 		await this.ready();
 
-		if (this.pool === undefined) {
-			throw new Error('this.pool is undefined');
+		if (pool === undefined) {
+			const err = new Error('this.pool is undefined');
+			log.error(logPrefix + err.message);
+			throw err;
 		}
 
 		log.verbose(logPrefix + 'Running SQL query. SQL: "' + sql + '", fields: "' + JSON.stringify(dbFields) + '"');
 
-		const result = await this.pool.query(sql, dbFields);
+		let result;
+
+		try {
+			result = await pool.query(sql, dbFields);
+		} catch (err) {
+			log.error(logPrefix + 'Error running SQL query: ' + err.message);
+			throw err;
+		}
 
 		return result;
 	}
 
 	public async end(): Promise<void> {
-		if (this.pool === undefined) {
+		const logPrefix = topLogPrefix + 'end() - ';
+		const { log, pool } = this;
+
+		log.verbose(logPrefix + 'Trying to end pool');
+
+		if (pool === undefined) {
+			log.verbose(logPrefix + 'No pool configured, no ending needed');
 			return;
 		}
 
-		await this.pool.end();
+		await pool.end();
+		log.verbose(logPrefix + 'Pool is ended');
 	}
 }
 

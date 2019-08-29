@@ -9,7 +9,7 @@ type ConnectOptions = {
 	connectionString?: string;
 };
 
-type DbSubField = string | number | boolean;
+type DbSubField = string | number | boolean | null;
 
 type DbField = DbSubField | DbSubField[];
 
