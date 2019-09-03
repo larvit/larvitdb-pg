@@ -1,6 +1,6 @@
 {
   "name": "larvitdb-pg",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Database wrapper for pg (PostgreSQL)",
   "main": "build/index.js",
   "files": [

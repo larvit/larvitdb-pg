@@ -7,6 +7,7 @@ const topLogPrefix = 'larvitdb-pg: src/index.ts: ';
 class Db {
 	public pool?: Pool;
 	public isConnected: boolean = false;
+	public poolIsEnded: boolean = false;
 	private connectOptions: ConnectOptions;
 	private log: LogInstance;
 	private lUtils: Utils;
@@ -122,6 +123,12 @@ class Db {
 	public async query(sql: string, dbFields?: DbField[], options?: QueryOptions): Promise<QueryResponse> {
 		const logPrefix = topLogPrefix + 'query() - ';
 
+		if (this.poolIsEnded === true) {
+			const err = new Error('Pool is marked as ended, no queries should be ran towards it.');
+			this.log.error(logPrefix + err.message);
+			throw err;
+		}
+
 		await this.ready();
 		const { log, pool } = this;
 
@@ -151,14 +158,19 @@ class Db {
 
 	public async end(): Promise<void> {
 		const logPrefix = topLogPrefix + 'end() - ';
-		const { log, pool } = this;
+		const { log, pool, lUtils } = this;
 
 		log.verbose(logPrefix + 'Trying to end pool');
+
+		this.poolIsEnded = true;
 
 		if (pool === undefined) {
 			log.verbose(logPrefix + 'No pool configured, no ending needed');
 			return;
 		}
+
+		// Wait a second to make sure all minor queries have had time to run.
+		await lUtils.setTimeout(1000);
 
 		await pool.end();
 		log.verbose(logPrefix + 'Pool is ended');
