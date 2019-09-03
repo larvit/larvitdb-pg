@@ -1,6 +1,6 @@
 import { Client, Pool, PoolClient } from 'pg';
 import { Utils, Log, LogInstance } from 'larvitutils';
-import { ConnectOptions, DbField, DbInitOptions, QueryResponse } from './models';
+import { ConnectOptions, DbField, DbInitOptions, QueryResponse, QueryOptions } from './models';
 
 const topLogPrefix = 'larvitdb-pg: src/index.ts: ';
 
@@ -119,7 +119,7 @@ class Db {
 		await this.query(sql);
 	}
 
-	public async query(sql: string, dbFields?: DbField[]): Promise<QueryResponse> {
+	public async query(sql: string, dbFields?: DbField[], options?: QueryOptions): Promise<QueryResponse> {
 		const logPrefix = topLogPrefix + 'query() - ';
 
 		await this.ready();
@@ -138,7 +138,11 @@ class Db {
 		try {
 			result = await pool.query(sql, dbFields);
 		} catch (err) {
-			log.error(logPrefix + 'Error running SQL query: ' + err.message + ' SQL: "' + sql + '", dbFields: "' + JSON.stringify(dbFields) + '"');
+			if (options && options.doNotLogErrors === true) {
+				log.verbose(logPrefix + 'Error running SQL query: ' + err.message + ' SQL: "' + sql + '", dbFields: "' + JSON.stringify(dbFields) + '"');
+			} else {
+				log.error(logPrefix + 'Error running SQL query: ' + err.message + ' SQL: "' + sql + '", dbFields: "' + JSON.stringify(dbFields) + '"');
+			}
 			throw err;
 		}
 

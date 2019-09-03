@@ -37,4 +37,17 @@ type QueryResponseRow = {
 	[key: string]: any;
 };
 
-export { ConnectOptions, DbField, DbInitOptions, LogInstance, QueryResponse, QueryResponseField, QueryResponseRow };
+type QueryOptions = {
+	doNotLogErrors?: boolean;
+};
+
+export {
+	ConnectOptions,
+	DbField,
+	DbInitOptions,
+	LogInstance,
+	QueryResponse,
+	QueryResponseField,
+	QueryResponseRow,
+	QueryOptions,
+};

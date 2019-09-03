@@ -99,6 +99,10 @@ await db.resetSchema('public');
 
 == Version history
 
+=== v0.5.1
+
+* Added option to not log errors on queries
+
 === v0.5
 
 * Added resetSchema() method, that effectively removes all tables (and of course their data)
