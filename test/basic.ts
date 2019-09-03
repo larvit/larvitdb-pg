@@ -30,12 +30,7 @@ test('Setup database connection', async t => {
 
 if (process.env.CLEAR_DB === 'true') {
 	test('Cleanup', async t => {
-		let sql = '';
-		sql += 'DROP SCHEMA public CASCADE;';
-		sql += 'CREATE SCHEMA public;';
-		sql += 'GRANT ALL ON SCHEMA public TO public;';
-		sql += 'COMMENT ON SCHEMA public IS \'standard public schema\';';
-		await db.query(sql);
+		await db.resetSchema('public');
 		t.end();
 	});
 }

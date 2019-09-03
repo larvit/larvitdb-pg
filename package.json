@@ -1,6 +1,6 @@
 {
   "name": "larvitdb-pg",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "description": "Database wrapper for pg (PostgreSQL)",
   "main": "build/index.js",
   "files": [
@@ -9,7 +9,7 @@
   "scripts": {
     "build": "npm run lint && tsc",
     "lint": "tslint ./src/* ./test/*",
-    "test": "npm run lint && ts-node node_modules/.bin/tape test/*.ts"
+    "test": "npm run build && ts-node node_modules/.bin/tape test/*.ts"
   },
   "repository": {
     "type": "git",

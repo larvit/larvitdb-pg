@@ -105,6 +105,20 @@ class Db {
 		return;
 	}
 
+	public async resetSchema(schemaName: string): Promise<void> {
+		const logPrefix = topLogPrefix + 'resetSchema() - schemaName: "' + schemaName + '" - ';
+		const { log } = this;
+
+		log.info(logPrefix + 'Resetting schema, removing all tables!');
+
+		let sql = '';
+		sql += 'DROP SCHEMA ' + schemaName + ' CASCADE;';
+		sql += 'CREATE SCHEMA ' + schemaName + ';';
+		sql += 'GRANT ALL ON SCHEMA ' + schemaName + ' TO ' + schemaName + ';';
+		sql += 'COMMENT ON SCHEMA ' + schemaName + ' IS \'' + schemaName + ' schema\';';
+		await this.query(sql);
+	}
+
 	public async query(sql: string, dbFields?: DbField[]): Promise<QueryResponse> {
 		const logPrefix = topLogPrefix + 'query() - ';
 

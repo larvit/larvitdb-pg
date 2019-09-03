@@ -89,15 +89,19 @@ However, a query can be ran before ready(), it will wait until the database conn
 
 Remove all tables from current database
 
-This function will clean the current database from all tables.
+This function will clean the current database from all tables, in the public schema, by removing and then recreating it.
 
 [source,javascript]
 ----
-await db.removeAllTables();
+await db.resetSchema('public');
 ----
 
 
 == Version history
+
+=== v0.5
+
+* Added resetSchema() method, that effectively removes all tables (and of course their data)
 
 === v0.4
 
