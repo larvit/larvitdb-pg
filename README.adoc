@@ -56,7 +56,7 @@ For example if you want to lock tables and run multiple queries on the samme con
 
 [source,javascript]
 ----
-const dbCon = await db.pool.getConnection();
+const dbCon = await db.getConnection();
 const sql   = 'SELECT * FROM users WHERE username LIKE ' + dbCon.escape(dataToBeEscaped);
 const dbRes = await dbCon.query(sql);
 dbCon.release(); // Always release your connection when the query is done
@@ -98,6 +98,11 @@ await db.resetSchema('public');
 
 
 == Version history
+
+=== v1.0.0
+
+* Changed behaviour of getConnection and added getPool
+* Added logging for individual connection queries
 
 === v0.5.1
 

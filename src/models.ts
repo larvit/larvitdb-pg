@@ -9,6 +9,11 @@ type ConnectOptions = {
 	connectionString?: string;
 };
 
+type DbConInternal = {
+	query(sql: string, dbFields?: DbField[], options?: QueryOptions): Promise<QueryResponse>;
+	end(): Promise<void>;
+};
+
 type DbSubField = string | number | boolean | null;
 
 type DbField = DbSubField | DbSubField[];
@@ -39,10 +44,12 @@ type QueryResponseRow = {
 
 type QueryOptions = {
 	doNotLogErrors?: boolean;
+	queryFn?(sql: string, dbFields?: DbField[]): Promise<QueryResponse>;
 };
 
 export {
 	ConnectOptions,
+	DbConInternal,
 	DbField,
 	DbInitOptions,
 	LogInstance,

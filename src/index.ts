@@ -1,6 +1,6 @@
 import { Client, Pool, PoolClient } from 'pg';
 import { Utils, Log, LogInstance } from 'larvitutils';
-import { ConnectOptions, DbField, DbInitOptions, QueryResponse, QueryOptions } from './models';
+import { ConnectOptions, DbField, DbInitOptions, QueryResponse, QueryOptions, DbConInternal } from './models';
 
 const topLogPrefix = 'larvitdb-pg: src/index.ts: ';
 
@@ -73,7 +73,7 @@ class Db {
 		this.pool = new Pool(connectOptions);
 		this.isConnected = true;
 
-		// the pool will emit an error on behalf of any idle clients
+		// The pool will emit an error on behalf of any idle clients
 		// it contains if a backend error or network partition happens
 		this.pool.on('error', err /*, client */ => {
 			log.error(logPrefix + 'Unexpected error on idle client in pool: ' + err.message);
@@ -81,8 +81,30 @@ class Db {
 		});
 	}
 
-	public async getConnection(): Promise<PoolClient> {
+	public async getConnection(): Promise<DbConInternal> {
 		const logPrefix = topLogPrefix + 'getConnection() - ';
+
+		await this.ready();
+		const { log, connectOptions } = this;
+		const query = this.query.bind(this);
+
+		log.debug(logPrefix + 'Making new connection.');
+
+		const dbCon = new Client(connectOptions);
+		await dbCon.connect();
+
+		function internalQuery(sql: string, dbFields?: DbField[], options?: QueryOptions): Promise<QueryResponse> {
+			return query(sql, dbFields, { queryFn: dbCon.query.bind(dbCon) });
+		}
+
+		return {
+			query: internalQuery,
+			end: dbCon.end.bind(dbCon),
+		};
+	}
+
+	public async getPool(): Promise<PoolClient> {
+		const logPrefix = topLogPrefix + 'getPool() - ';
 
 		await this.ready();
 		const { log, pool } = this;
@@ -93,9 +115,7 @@ class Db {
 			throw err;
 		}
 
-		const client = await pool.connect();
-
-		return client;
+		return pool.connect();
 	}
 
 	public async ready(): Promise<void> {
@@ -138,12 +158,20 @@ class Db {
 			throw err;
 		}
 
+		let queryFn;
+
+		if (options && options.queryFn) {
+			queryFn = options.queryFn;
+		} else {
+			queryFn = pool.query.bind(pool);
+		}
+
 		log.debug(logPrefix + 'Running SQL query. SQL: "' + sql + '", fields: "' + JSON.stringify(dbFields) + '"');
 
 		let result;
 
 		try {
-			result = await pool.query(sql, dbFields);
+			result = await queryFn(sql, dbFields);
 		} catch (err) {
 			if (options && options.doNotLogErrors === true) {
 				log.verbose(logPrefix + 'Error running SQL query: ' + err.message + ' SQL: "' + sql + '", dbFields: "' + JSON.stringify(dbFields) + '"');
