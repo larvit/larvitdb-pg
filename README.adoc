@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/larvit/larvitdb-pg.svg?branch=master)](https://travis-ci.org/larvit/larvitdb-pg)
+[![Coverage Status](https://coveralls.io/repos/github/larvit/larvitdb-pg/badge.svg?branch=master)](https://coveralls.io/github/larvit/larvitdb-pg?branch=master)
+
 = Database wrapper for pg (PostgreSQL)
 
 Database wrapper for the pg npm package. Use this to add:

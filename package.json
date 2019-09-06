@@ -9,7 +9,7 @@
   "scripts": {
     "build": "npm run lint && tsc",
     "lint": "tslint ./src/* ./test/*",
-    "test": "npm run build && ts-node node_modules/.bin/tape test/*.ts"
+    "test": "npm run lint && npm run build && nyc --reporter=lcov --require ts-node/register tape test/**/*.{ts,js} | tap-spec; nyc report ---reporter=text"
   },
   "repository": {
     "type": "git",
@@ -41,9 +41,20 @@
     "@types/pg": "7.11.1",
     "@types/tape": "4.2.33",
     "dotenv": "8.1.0",
+    "coveralls": "3.0.6",
+    "nyc": "^14.1.1",
+    "tap-spec": "^5.0.0",
     "tape": "4.11.0",
     "ts-node": "8.3.0",
     "tslint": "5.19.0",
     "typescript": "3.6.2"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ]
   }
 }
