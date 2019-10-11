@@ -44,7 +44,7 @@ class Db {
 		const logPrefix = topLogPrefix + 'Db:connect() - ';
 		const { connectOptions, log, lUtils } = this;
 
-		log.debug(logPrefix + 'Trying to connecting to database');
+		log.debug(logPrefix + 'Trying to connect to database');
 
 		async function tryToConnect(): Promise<void> {
 			const subLogPrefix = logPrefix + 'tryToConnect() - ';
