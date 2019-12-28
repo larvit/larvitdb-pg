@@ -33,7 +33,7 @@
   "homepage": "https://github.com/larvit/larvitdb-pg#readme",
   "dependencies": {
     "larvitutils": "3.2.1",
-    "pg": "7.16.0"
+    "pg": "7.16.1"
   },
   "devDependencies": {
     "@types/dotenv": "6.1.1",
