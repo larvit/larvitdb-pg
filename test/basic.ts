@@ -43,8 +43,12 @@ test('Insert data', async t => {
 	const res = await db.query('SELECT * FROM tmp');
 
 	t.equal(res.rows.length, 2);
+	t.equal(res.rowCount, 2);
+	t.equal(res.command, 'SELECT');
 
 	await db.query('DROP TABLE tmp');
+
+	t.equal(res.rowCount, 2);
 
 	t.end();
 });

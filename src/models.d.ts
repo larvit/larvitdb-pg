@@ -29,8 +29,10 @@ type DbInitOptions = {
 };
 
 type QueryResponse = {
-	rows: QueryResponseRow[];
+	command: string;
 	fields: QueryResponseField[];
+	rowCount: number|null;
+	rows: QueryResponseRow[];
 };
 
 type QueryResponseField = {
@@ -45,16 +47,4 @@ type QueryResponseRow = {
 type QueryOptions = {
 	doNotLogErrors?: boolean;
 	queryFn?(sql: string, dbFields?: DbField[]): Promise<QueryResponse>;
-};
-
-export {
-	ConnectOptions,
-	DbConInternal,
-	DbField,
-	DbInitOptions,
-	LogInstance,
-	QueryResponse,
-	QueryResponseField,
-	QueryResponseRow,
-	QueryOptions,
 };
