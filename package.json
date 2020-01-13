@@ -1,13 +1,13 @@
 {
   "name": "larvitdb-pg",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Database wrapper for pg (PostgreSQL)",
   "main": "build/index.js",
   "files": [
     "/build"
   ],
   "scripts": {
-    "build": "npm run lint && tsc",
+    "build": "npm run lint && tsc && cp src/models.d.ts build/",
     "lint": "tslint ./src/* ./test/*",
     "test": "npm run lint && npm run build && nyc --reporter=lcov --require ts-node/register tape test/**/*.{ts,js} | tap-spec; nyc report ---reporter=text"
   },
