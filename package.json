@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@types/dotenv": "8.2.0",
-    "@types/node": "13.7.6",
+    "@types/node": "13.7.7",
     "@types/pg": "7.14.1",
     "@types/tape": "4.2.34",
     "dotenv": "8.2.0",
