@@ -39,7 +39,7 @@
     "@types/dotenv": "8.2.0",
     "@types/node": "13.9.2",
     "@types/pg": "7.14.3",
-    "@types/tape": "4.2.34",
+    "@types/tape": "4.13.0",
     "dotenv": "8.2.0",
     "coveralls": "3.0.11",
     "nyc": "15.0.0",
