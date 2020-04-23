@@ -1,6 +1,6 @@
 {
   "name": "larvitdb-pg",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Database wrapper for pg (PostgreSQL)",
   "main": "build/index.js",
   "files": [
@@ -33,20 +33,20 @@
   "homepage": "https://github.com/larvit/larvitdb-pg#readme",
   "dependencies": {
     "larvitutils": "3.2.1",
-    "pg": "7.18.2"
+    "pg": "8.0.3"
   },
   "devDependencies": {
     "@types/dotenv": "8.2.0",
-    "@types/node": "13.9.2",
+    "@types/node": "13.13.2",
     "@types/pg": "7.14.3",
-    "@types/tape": "4.2.34",
+    "@types/tape": "4.13.0",
     "dotenv": "8.2.0",
-    "coveralls": "3.0.11",
-    "nyc": "15.0.0",
+    "coveralls": "3.0.13",
+    "nyc": "15.0.1",
     "tap-spec": "5.0.0",
     "tape": "4.13.2",
-    "ts-node": "8.8.1",
-    "tslint": "6.1.0",
+    "ts-node": "8.9.0",
+    "tslint": "6.1.1",
     "typescript": "3.8.3"
   },
   "nyc": {

@@ -94,7 +94,11 @@ class Db {
 		await dbCon.connect();
 
 		function internalQuery(sql: string, dbFields?: DbField[], options?: QueryOptions): Promise<QueryResponse> {
-			return query(sql, dbFields, { queryFn: dbCon.query.bind(dbCon) });
+			if (!options) {
+				options = {};
+			}
+			options.queryFn = dbCon.query.bind(dbCon);
+			return query(sql, dbFields, options);
 		}
 
 		return {
