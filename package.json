@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/larvit/larvitdb-pg#readme",
   "dependencies": {
-    "larvitutils": "3.2.1",
+    "larvitutils": "3.2.3",
     "pg": "8.5.1"
   },
   "devDependencies": {
